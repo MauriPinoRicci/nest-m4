@@ -27,6 +27,9 @@ const PostgresDataSourceOptions: DataSourceOptions = {
   synchronize: false,
   logging: false,
   dropSchema: false,
+  ssl: {
+    rejectUnauthorized: false, // This is necessary for self-signed certificates
+  },
 };
 
 export const postgresDataSourceConfig = registerAs(
