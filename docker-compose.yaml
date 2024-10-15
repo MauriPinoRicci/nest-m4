@@ -1,0 +1,46 @@
+services:
+  nest-demo-pt21a:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/src
+    env_file:
+      - .env.development    
+    networks:
+      - pt21a-network
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: v8aYEwjA87HQK6
+      POSTGRES_DB: m4-db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - pt21a-network
+
+  pgadmin: 
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '8080:80'
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+
+networks:
+ pt21a-network:
+  driver: bridge
+
