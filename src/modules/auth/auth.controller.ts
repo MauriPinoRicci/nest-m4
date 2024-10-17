@@ -23,7 +23,6 @@ export class AuthController {
   @Post('/signin')
   @HttpCode(HttpStatus.OK)
   async signIn(@Body() credentials: SignInAuthDto) {
-    console.log('Received credentials:', credentials);
     try {
       const token = await this.authService.signIn(credentials);
       return token ;
