@@ -29,27 +29,7 @@ export class ProductsService {
     async getProducts(page: number = 1, limit: number = 5): Promise<ProductDto[]> {
         return this.productsRepository.getProducts(page, limit);
     }
-
-    async seedProducts(): Promise<void> {
-        for (const productData of ProductsMock) {
-            const category = await this.categoriesRepository.findByName(productData.category);
-
-            if (!category) {
-                throw new Error(`Category ${productData.category} not found`);
-            }
-
-            const existingProduct = await this.productsRepository.getProductById(productData.name);
-
-            if (!existingProduct) {
-                await this.productsRepository.createProduct({
-                    ...productData,
-                    category,
-                    imgUrl: ""
-                });
-            }
-        }
-    }
-    
+  
     async getProductById(id: string): Promise<ProductDto | null> {
         return this.productsRepository.getProductById(id);
     }

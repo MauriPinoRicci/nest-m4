@@ -60,12 +60,6 @@ export class ProductsController {
     return this.cloudinaryService.getUrl(id);
   }
 
-  @Get('/seeder')
-  @HttpCode(HttpStatus.OK)
-  async seedProducts(): Promise<void> {
-    await this.productsService.seedProducts();
-  }
-
   @Get('/')
   @HttpCode(HttpStatus.OK)
   async getProducts(
