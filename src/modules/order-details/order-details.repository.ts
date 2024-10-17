@@ -9,7 +9,7 @@ export class OrderDetailsRepository {
     constructor(
         @InjectRepository(OrderDetails)
         private readonly orderDetailsRepository: Repository<OrderDetails>,
-    ) { }
+    ) {}
 
     async create(createOrderDetailDto: createOrderDetailDto): Promise<OrderDetails> {
         const orderDetail = this.orderDetailsRepository.create(createOrderDetailDto);
@@ -30,10 +30,16 @@ export class OrderDetailsRepository {
     }
 
     async findOneByOrderId(orderId: string, relations: string[] = []): Promise<OrderDetails | null> {
-        return this.orderDetailsRepository.findOne({
+        const orderDetail = await this.orderDetailsRepository.findOne({
             where: { order: { id: orderId } },
             relations,
         });
+
+        if (!orderDetail) {
+            throw new NotFoundException(`Order detail with order ID ${orderId} not found`);
+        }
+
+        return orderDetail;
     }
 
     async findAll(): Promise<OrderDetails[]> {
@@ -49,7 +55,7 @@ export class OrderDetailsRepository {
         });
 
         if (!orderDetail) {
-            return null;
+            throw new NotFoundException(`OrderDetail with ID ${id} not found`);
         }
 
         return this.orderDetailsRepository.save(orderDetail);
