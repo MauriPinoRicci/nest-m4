@@ -38,6 +38,7 @@ export class ProductsSeed {
                 product.description = productData.description;
                 product.price = productData.price;
                 product.stock = productData.stock;
+                product.imgUrl = productData.imgUrl;
                 product.category = await this.findCategoryByName(productData.category);
                 await this.productRepository.save(product);
             }
