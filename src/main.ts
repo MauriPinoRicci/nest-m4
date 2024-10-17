@@ -10,6 +10,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.use((req, res, next) => {
+    if (req.path === '/') {
+      return res.redirect('/docs');
+    }
+    next();
+  });
+
   app.use(loggerGlobal);
 
   app.use(
