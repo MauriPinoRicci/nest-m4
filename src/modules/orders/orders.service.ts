@@ -57,9 +57,17 @@ export class OrdersService {
     }
 
     async findAll(): Promise<Orders[]> {
-        return this.orderRepository.find();
+        const orders = await this.orderRepository.find({
+            relations: ['orderDetails', 'orderDetails.products'],
+        });
+    
+        if (!orders.length) {
+            throw new NotFoundException('No orders found');
+        }
+    
+        return orders;
     }
-
+    
     async findOne(id: string): Promise<OrderResponseDto> {
         const order = await this.orderRepository.findOne({
             where: { id },
