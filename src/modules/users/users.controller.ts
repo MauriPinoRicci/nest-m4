@@ -17,7 +17,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { UuidValidationPipe } from 'src/pipes/uuid-validation.pipe';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from './enum/role.enum';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { UserDto } from './Dtos/user.dto';
 
 @ApiBearerAuth()
@@ -57,6 +57,7 @@ export class UsersController {
   }
 
   @Post()
+  @ApiExcludeEndpoint()
   @HttpCode(HttpStatus.CREATED)
   async createUsers(@Body() user: UserDto) {
     const createdUser = await this.usersService.createUser(user);
