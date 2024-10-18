@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './Dtos/create-order.dto';
 import { UpdateOrderDto } from './Dtos/update-order.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiTags('orders')
@@ -32,14 +32,13 @@ export class OrdersController {
     }
 
     @Delete(':id')
-    async remove(id: string): Promise<boolean> {
-        const order = await this.orderRepository.findOneBy({ id });
-        
+    @ApiResponse({ status: 200, description: 'Order successfully deleted.' })
+    @ApiResponse({ status: 404, description: 'Order not found.' })
+    async remove(@Param('id') id: string): Promise<void> {
+        const order = await this.ordersService.deleteOrder(id);
+
         if (!order) {
-            return false;
+            throw new NotFoundException(`Order with ID ${id} not found`);
         }
-    
-        await this.orderRepository.remove(order);
-        return true;
     }
 }

@@ -99,13 +99,14 @@ export class OrdersService {
         return this.orderRepository.save(order);
     }
 
-    async remove(id: string): Promise<void> {
+    async deleteOrder(id: string): Promise<Orders | null> {
         const order = await this.orderRepository.findOneBy({ id });
-
-        if (!order) {
-            throw new NotFoundException(`Order with ID ${id} not found`);
+    
+        if (order) {
+            await this.orderRepository.remove(order);
+            return order; 
         }
-
-        await this.orderRepository.remove(order);
+    
+        return null; 
     }
 }
