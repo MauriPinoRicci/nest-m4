@@ -21,7 +21,7 @@ import { UuidValidationPipe } from 'src/pipes/uuid-validation.pipe';
 import { CloudinaryService } from './cloudinary.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { RolesGuard } from 'src/guards/roles/roles.guard';
-import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from '../users/enum/role.enum';
 
@@ -39,6 +39,17 @@ export class ProductsController {
   @Roles(Role.Admin)
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image'))
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   async uploadProductImage(
     @Param('id') productId: string,
     @UploadedFile() file: Express.Multer.File,
