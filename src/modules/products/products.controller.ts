@@ -21,7 +21,9 @@ import { UuidValidationPipe } from 'src/pipes/uuid-validation.pipe';
 import { CloudinaryService } from './cloudinary.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { RolesGuard } from 'src/guards/roles/roles.guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from '../users/enum/role.enum';
 
 @ApiBearerAuth()
 @ApiTags('products')
@@ -34,6 +36,8 @@ export class ProductsController {
 
   @Post('files/uploadImage/:id')
   @HttpCode(HttpStatus.OK)
+  @Roles(Role.Admin)
+  @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image'))
   async uploadProductImage(
     @Param('id') productId: string,
