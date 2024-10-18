@@ -43,7 +43,7 @@ export class ProductsController {
     schema: {
       type: 'object',
       properties: {
-        file: {
+        image: {
           type: 'string',
           format: 'binary',
         },
