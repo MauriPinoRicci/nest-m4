@@ -27,8 +27,10 @@ export class createOrderDetailDto {
     })
     @IsArray({ message: 'Los productos deben ser un arreglo.' })
     @IsNotEmpty({ message: 'La lista de productos no debe estar vacía.' })
-    products: Array<object>;
+    products: Array<{ id: string }>;
 
+
+    
     constructor(partial: Partial<createOrderDetailDto> = {}) {
         Object.assign(this, partial);
     }

@@ -27,7 +27,7 @@ export class updateOrderDetailDto {
     })
     @IsArray({ message: 'Los productos deben ser un arreglo.' })
     @IsOptional()
-    products?: Array<object>;
+    products?: Array<{ id: string }>;
 
     constructor(partial: Partial<updateOrderDetailDto> = {}) {
         Object.assign(this, partial);
