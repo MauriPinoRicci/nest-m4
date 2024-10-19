@@ -24,12 +24,12 @@ const PostgresDataSourceOptions: DataSourceOptions = {
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migration/*{.ts,.js}'],
   subscribers: [],
-  synchronize: true,
+  synchronize: false,
   logging: false,
   dropSchema: false,
-  ssl: {
-    rejectUnauthorized: false, 
-  },
+  // ssl: {
+  //   rejectUnauthorized: false, 
+  // },
 };
 
 export const postgresDataSourceConfig = registerAs(
@@ -44,4 +44,4 @@ export const sqliteDataSourceConfig = registerAs(
 
 export const SqliteDateSource = new DataSource(SqliteTestDataSourceOptions);
 
-export const PostgresDataSource = new DataSource(PostgresDataSourceOptions);
+//export const PostgresDataSource = new DataSource(PostgresDataSourceOptions);

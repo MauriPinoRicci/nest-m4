@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './Dtos/create-order.dto';
 import { UpdateOrderDto } from './Dtos/update-order.dto';
@@ -26,19 +26,22 @@ export class OrdersController {
         return await this.ordersService.findOne(id);
     }
 
-    @Patch(':id')
+    @Put(':id')
     async update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
         return await this.ordersService.update(id, updateOrderDto);
     }
 
     @Delete(':id')
-    @ApiResponse({ status: 200, description: 'Order successfully deleted.' })
-    @ApiResponse({ status: 404, description: 'Order not found.' })
-    async remove(@Param('id') id: string): Promise<void> {
+    async remove(@Param('id') id: string): Promise<{ message: string }> {
         const order = await this.ordersService.deleteOrder(id);
 
         if (!order) {
-            throw new NotFoundException(`Order with ID ${id} not found`);
+            throw new HttpException(
+                { message: `Order with ID ${id} not found` },
+                HttpStatus.NOT_FOUND
+            );
         }
+
+        return { message: 'Order successfully deleted.' };
     }
 }

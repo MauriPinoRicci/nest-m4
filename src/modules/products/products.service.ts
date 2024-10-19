@@ -61,11 +61,12 @@ export class ProductsService {
         if (product.stock === 0) {
             throw new Error('Out of Stock');
         }
-
+    
         await this.productsRepository.updateProduct(id, {
             stock: product.stock - 1,
         });
         console.log('Product bought successfully');
-        return product.price;
+        return product.price; 
     }
+    
 }

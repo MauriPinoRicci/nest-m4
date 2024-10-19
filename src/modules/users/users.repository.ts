@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Users } from "./users.entity";
 import { UserDto } from "./Dtos/user.dto";
-import { format } from 'date-fns';
+
 @Injectable()
 export class UsersRepository {
    
@@ -26,7 +26,7 @@ export class UsersRepository {
             skip: (page - 1) * limit,
             take: limit,
             select: ['id', 'email', 'name', 'address', 'phone', 'country', 'city', 'createdAt'],
-            relations: ['orders'], 
+            relations: ['orders','orders.orderDetails'], 
         });
 
         return users.map(user => {

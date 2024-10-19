@@ -13,7 +13,11 @@ export class OrderDetailsRepository {
 
     async create(createOrderDetailDto: createOrderDetailDto): Promise<OrderDetails> {
         const orderDetail = this.orderDetailsRepository.create(createOrderDetailDto);
-        return await this.orderDetailsRepository.save(orderDetail);
+        try {
+            return await this.orderDetailsRepository.save(orderDetail); 
+        } catch (error) {
+            throw new Error('Error al crear los detalles de la orden: ' + error.message);
+        }
     }
 
     async findOne(id: string): Promise<OrderDetails | null> {
@@ -34,10 +38,6 @@ export class OrderDetailsRepository {
             where: { order: { id: orderId } },
             relations,
         });
-
-        if (!orderDetail) {
-            throw new NotFoundException(`Order detail with order ID ${orderId} not found`);
-        }
 
         return orderDetail;
     }

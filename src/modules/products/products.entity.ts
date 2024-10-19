@@ -4,7 +4,6 @@ import { OrderDetails } from "../order-details/order-details.entity";
 
 @Entity({ name: 'products' })
 export class Products {
-
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -23,7 +22,7 @@ export class Products {
     @Column({ type: 'integer', nullable: false })
     stock: number;
 
-    @Column({ type: 'text', nullable: true, })
+    @Column({ type: 'text', nullable: true })
     imgUrl: string;
 
     @ManyToOne(() => Categories, category => category.products)

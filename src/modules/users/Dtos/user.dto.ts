@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, IsOptional, IsEmpty } from 'class-validator';
 import { Orders } from 'src/modules/orders/orders.entity';
 
 export class UserDto {
@@ -48,14 +48,6 @@ export class UserDto {
   @IsOptional()
   address?: string;
 
-  @ApiProperty({
-    type: String,
-    description: 'phone number of user',
-    required: false,
-  })
-  @IsString()
-  @IsNotEmpty()
-  phone: string;
 
   @ApiProperty({
     type: String,
