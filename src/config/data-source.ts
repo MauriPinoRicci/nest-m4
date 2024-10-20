@@ -44,4 +44,4 @@ export const sqliteDataSourceConfig = registerAs(
 
 export const SqliteDateSource = new DataSource(SqliteTestDataSourceOptions);
 
-//export const PostgresDataSource = new DataSource(PostgresDataSourceOptions);
+export const PostgresDataSource = new DataSource(PostgresDataSourceOptions);

@@ -1,14 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Products } from './products.entity';
 import { ProductDto } from './Dtos/productDto';
+import { CategoriesRepository } from '../categories/categories.repository';
 
 @Injectable()
 export class ProductsRepository {
     constructor(
         @InjectRepository(Products)
         private readonly productsRepository: Repository<Products>,
+        private readonly categoriesRepository: CategoriesRepository,
     ) { }
 
     private toProductDto(product: Products): ProductDto {
@@ -69,11 +71,24 @@ export class ProductsRepository {
         return this.toProductDto(product);
     }
 
-    async createProduct(productData: Omit<ProductDto, 'id'>): Promise<ProductDto> {
-        const newProduct = this.productsRepository.create(productData);
-        const savedProduct = await this.productsRepository.save(newProduct);
-        return this.toProductDto(savedProduct);
-    }
+    async createProduct(productData: any): Promise<Products> {
+        const category = await this.categoriesRepository.findByName(productData.category);
+    
+        if (!category) {
+          throw new NotFoundException(`Category '${productData.category}' not found`);
+        }
+    
+        const newProduct = this.productsRepository.create({
+          name: productData.name,
+          description: productData.description,
+          price: productData.price,
+          stock: productData.stock,
+          imgUrl: productData.imgUrl,
+          category: category,
+        });
+    
+        return this.productsRepository.save(newProduct);
+      }
 
     async updateProduct(id: string, updatedProductData: Partial<Omit<ProductDto, 'id'>>): Promise<ProductDto | undefined> {
         await this.productsRepository.update(id, updatedProductData);
