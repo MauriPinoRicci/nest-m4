@@ -91,15 +91,14 @@ export class SignUpAuthDto {
     @Length(5, 20, { message: 'The city must be between 5 and 20 characters long.' })
     city: string;
 
-    // Nueva propiedad admin
     @ApiProperty({
         type: String,
         description: 'User role',
-        enum: Role,  // Enum que contiene los roles permitidos
+        enum: Role, 
         required: false,
     })
     @IsEnum(Role, { message: 'The role must be either Admin or User.' })
-    @IsOptional()  // Opcional en caso de que quieras asignar por defecto Role.User
+    @IsOptional()  
     admin?: Role = Role.User;
 
     constructor(partial: Partial<SignUpAuthDto>) {
