@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, Length, IsEmail, Matches, IsOptional, IsNumberString } from 'class-validator';
+import { IsString, IsNotEmpty, Length, IsEmail, Matches, IsOptional, IsNumberString, IsEnum } from 'class-validator';
+import { Role } from 'src/modules/users/enum/role.enum'; // Importa tu enum de roles
 
 export class SignUpAuthDto {
     @ApiProperty({
@@ -89,6 +90,17 @@ export class SignUpAuthDto {
     @IsNotEmpty({ message: 'The city must not be empty.' })
     @Length(5, 20, { message: 'The city must be between 5 and 20 characters long.' })
     city: string;
+
+    // Nueva propiedad admin
+    @ApiProperty({
+        type: String,
+        description: 'User role',
+        enum: Role,  // Enum que contiene los roles permitidos
+        required: false,
+    })
+    @IsEnum(Role, { message: 'The role must be either Admin or User.' })
+    @IsOptional()  // Opcional en caso de que quieras asignar por defecto Role.User
+    admin?: Role = Role.User;
 
     constructor(partial: Partial<SignUpAuthDto>) {
         Object.assign(this, partial);
