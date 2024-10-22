@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsEmail, IsNotEmpty, IsOptional, IsEmpty } from 'class-validator';
 import { Orders } from 'src/modules/orders/orders.entity';
+import { Role } from '../enum/role.enum';
 
 export class UserDto {
   @ApiProperty({
@@ -82,4 +83,14 @@ export class UserDto {
   })
   @IsOptional()
   orders?: Orders[];
+
+  @ApiProperty({
+    type: String,
+    description: 'Role of user',
+    enum: Role,
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  admin?: Role;  
 }

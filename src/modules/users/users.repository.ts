@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Users } from "./users.entity";
 import { UserDto } from "./Dtos/user.dto";
+import { Role } from "./enum/role.enum";
 
 @Injectable()
 export class UsersRepository {
@@ -12,20 +13,23 @@ export class UsersRepository {
         private readonly userRepository: Repository<Users>,
     ) { }
 
-    async createUser(user: Omit<UserDto, 'id'> & { password: string }): Promise<UserDto> {
+    async createUser(user: Omit<UserDto, 'id'> & { password: string, admin?: Role }): Promise<UserDto> {
         const newUser = this.userRepository.create({
             ...user,
+            admin: user.admin || Role.User, 
             createdAt: new Date(),
         });
+    
         const savedUser = await this.userRepository.save(newUser);
         return savedUser; 
     }
+    
 
     async getUsers(page: number = 1, limit: number = 5): Promise<UserDto[]> {
         const [users] = await this.userRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
-            select: ['id', 'email', 'name', 'address', 'phone', 'country', 'city', 'createdAt'],
+            select: ['id', 'email', 'name', 'address', 'phone', 'country', 'city', 'createdAt','admin'],
             relations: ['orders','orders.orderDetails'], 
         });
 

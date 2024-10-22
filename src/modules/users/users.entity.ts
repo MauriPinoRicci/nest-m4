@@ -34,6 +34,11 @@ export class Users {
   @OneToMany(() => Orders, (order) => order.user)
   orders: Orders[];
 
-  @Column()
-  admin: string = Role.User;
+  @Column({ 
+    type: 'varchar', 
+    length: 10, 
+    default: Role.User,  
+  })
+  admin: Role;
+  
 }

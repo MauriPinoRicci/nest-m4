@@ -21,7 +21,7 @@ import { UuidValidationPipe } from 'src/pipes/uuid-validation.pipe';
 import { CloudinaryService } from './cloudinary.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { RolesGuard } from 'src/guards/roles/roles.guard';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from '../users/enum/role.enum';
 
@@ -70,6 +70,7 @@ export class ProductsController {
   }
 
   @Get(':id/image')
+  @ApiExcludeEndpoint()
   @HttpCode(HttpStatus.OK)
   async getImage(@Param('id') id: string) {
     return this.cloudinaryService.getUrl(id);
