@@ -5,7 +5,7 @@ import { UserDto } from './Dtos/user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepository: UsersRepository) {}
+  constructor(private readonly userRepository: UsersRepository) { }
 
   async getUsers(page: number = 1, limit: number = 5): Promise<UserDto[]> {
     return this.userRepository.getUsers(page, limit);
@@ -20,9 +20,9 @@ export class UsersService {
   }
 
   async createUser(user: Omit<UserDto, 'id'> & { password: string }): Promise<{ id: string }> {
-    const newUser = await this.userRepository.createUser(user); 
+    const newUser = await this.userRepository.createUser(user);
     return { id: newUser.id };
-}
+  }
 
   async modifyUser(
     id: string,

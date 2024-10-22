@@ -8,6 +8,7 @@ import {
   IsOptional,
   IsNumberString,
 } from 'class-validator';
+import { Role } from '../enum/role.enum';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -86,4 +87,12 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'La ciudad no debe estar vacía.' })
   @Length(5, 20, { message: 'La ciudad debe tener entre 5 y 20 caracteres.' })
   city: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'Role of user',
+    required: true,
+  })
+  @IsString()
+  admin:string = Role.Admin;
 }
