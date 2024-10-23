@@ -42,11 +42,4 @@ export class UpdateProductDto {
   @IsOptional()
   imgUrl?: string;
 
-  @ApiPropertyOptional({
-    type: String,
-    description: 'Category to which the product belongs',
-  })
-  @IsString()
-  @IsOptional()
-  category?: string;  // Usamos el nombre de la categoría como string
 }

@@ -24,6 +24,8 @@ import { RolesGuard } from 'src/guards/roles/roles.guard';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from '../users/enum/role.enum';
+import { UpdateProductDto } from './Dtos/updateProductDto';
+import { Products } from './products.entity';
 
 @ApiBearerAuth()
 @ApiTags('products')
@@ -110,11 +112,12 @@ export class ProductsController {
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard,RolesGuard)
+  @Roles(Role.Admin)
   async updateProduct(
     @Param('id', UuidValidationPipe) id: string,
-    @Body() productData: Partial<Omit<ProductDto, 'id'>>,
-  ): Promise<{ id: string }> {
+    @Body() productData: UpdateProductDto,
+  ): Promise<Partial<Products | undefined>> {
     const updatedProduct = await this.productsService.updateProduct(
       id,
       productData,
@@ -122,7 +125,7 @@ export class ProductsController {
     if (!updatedProduct) {
       throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
     }
-    return { id };
+    return updatedProduct;
   }
 
   @Delete(':id')

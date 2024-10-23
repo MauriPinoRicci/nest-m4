@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Products } from './products.entity';
 import { ProductDto } from './Dtos/productDto';
 import { CategoriesRepository } from '../categories/categories.repository';
+import { UpdateProductDto } from './Dtos/updateProductDto';
 
 @Injectable()
 export class ProductsRepository {
@@ -90,12 +91,11 @@ export class ProductsRepository {
         return this.productsRepository.save(newProduct);
       }
 
-    async updateProduct(id: string, updatedProductData: Partial<Omit<ProductDto, 'id'>>): Promise<ProductDto | undefined> {
+    async updateProduct(id: string, updatedProductData: UpdateProductDto): Promise<Partial<Products | undefined>> {
         await this.productsRepository.update(id, updatedProductData);
 
         const updatedProduct = await this.productsRepository.findOne({
             where: { id },
-            relations: ['category'],
         });
 
         if (!updatedProduct) return undefined;

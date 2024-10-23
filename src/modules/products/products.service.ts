@@ -4,6 +4,7 @@ import { Products } from "./products.entity";
 import { ProductDto } from "./Dtos/productDto";
 import { ProductsMock } from "src/seeds/products/products-mock";
 import { CategoriesRepository } from "../categories/categories.repository";
+import { UpdateProductDto } from "./Dtos/updateProductDto";
 
 @Injectable()
 export class ProductsService {
@@ -39,17 +40,12 @@ export class ProductsService {
         return { id: result.id };
     }
 
-    async modifyProduct(id: string, updatedProductData: Partial<Omit<Products, 'id'>>): Promise<ProductDto | null> {
-        await this.productsRepository.getProductById(id);
-        return this.productsRepository.updateProduct(id, updatedProductData);
-    }
-
     async deleteProduct(id: string): Promise<{ id: string } | null> {
         const deletedProduct = await this.productsRepository.deleteProduct(id);
         return deletedProduct ? { id: deletedProduct.id } : null;
     }
 
-    async updateProduct(id: string, updatedProductData: Partial<Omit<Products, 'id'>>): Promise<ProductDto | undefined> {
+    async updateProduct(id: string, updatedProductData:UpdateProductDto ): Promise<Partial<Products | undefined>> {
         return this.productsRepository.updateProduct(id, updatedProductData);
     }
 
