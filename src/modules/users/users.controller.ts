@@ -19,6 +19,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from './enum/role.enum';
 import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { UserDto } from './Dtos/user.dto';
+import { RolesGuard } from 'src/guards/roles/roles.guard';
 
 @ApiBearerAuth()
 @ApiTags('users')
@@ -40,6 +41,7 @@ export class UsersController {
   }
 
   @Get('admin')
+  @UseGuards(AuthGuard,RolesGuard)
   @Roles(Role.Admin)
   getAdmin() {
     return 'Ruta protegida';
