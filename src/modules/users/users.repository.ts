@@ -13,10 +13,10 @@ export class UsersRepository {
         private readonly userRepository: Repository<Users>,
     ) { }
 
-    async createUser(user: Omit<UserDto, 'id'> & { password: string, admin?: Role }): Promise<UserDto> {
+    async createUser(user: Omit<UserDto, 'id'> & { password: string, role?: Role }): Promise<UserDto> {
         const newUser = this.userRepository.create({
             ...user,
-            admin: user.admin || Role.User, 
+            role: user.role || Role.User, 
             createdAt: new Date(),
         });
     
@@ -29,7 +29,7 @@ export class UsersRepository {
         const [users] = await this.userRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
-            select: ['id', 'email', 'name', 'address', 'phone', 'country', 'city', 'createdAt','admin'],
+            select: ['id', 'email', 'name', 'address', 'phone', 'country', 'city', 'createdAt','role'],
             relations: ['orders','orders.orderDetails'], 
         });
 
@@ -91,7 +91,7 @@ export class UsersRepository {
     async findByEmail(email: string): Promise<Users | null> {
         const user = await this.userRepository.findOne({
             where: { email },
-            select: ['id', 'email', 'name', 'address', 'phone', 'country', 'city', 'createdAt','password'],
+            select: ['id', 'email', 'name', 'address', 'phone', 'country', 'city', 'createdAt','password','role'],
         });
 
         return user || null;

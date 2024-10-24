@@ -39,6 +39,6 @@ export class Users {
     length: 10, 
     default: Role.User,  
   })
-  admin: Role;
+  role: Role;
   
 }

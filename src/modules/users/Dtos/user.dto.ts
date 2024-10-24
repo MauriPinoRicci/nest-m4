@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsEmail, IsNotEmpty, IsOptional, IsEmpty } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, IsOptional, IsEmpty, IsEnum } from 'class-validator';
 import { Orders } from 'src/modules/orders/orders.entity';
 import { Role } from '../enum/role.enum';
 
@@ -90,7 +90,8 @@ export class UserDto {
     enum: Role,
     required: false,
   })
-  @IsOptional()
-  @IsString()
-  admin?: Role;  
+  @IsEnum(Role, { message: 'The role must be either Admin or User.' })
+  @IsOptional()  
+  role?: Role; 
+ 
 }

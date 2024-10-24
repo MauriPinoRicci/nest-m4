@@ -94,12 +94,13 @@ export class SignUpAuthDto {
     @ApiProperty({
         type: String,
         description: 'User role',
-        enum: Role, 
+        enum: Role,
         required: false,
+        default: Role.User,
     })
     @IsEnum(Role, { message: 'The role must be either Admin or User.' })
     @IsOptional()  
-    admin?: Role = Role.User;
+    role?: Role = Role.User;
 
     constructor(partial: Partial<SignUpAuthDto>) {
         Object.assign(this, partial);

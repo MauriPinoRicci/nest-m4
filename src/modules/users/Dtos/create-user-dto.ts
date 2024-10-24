@@ -7,6 +7,7 @@ import {
   Matches,
   IsOptional,
   IsNumberString,
+  IsEnum,
 } from 'class-validator';
 import { Role } from '../enum/role.enum';
 
@@ -91,8 +92,11 @@ export class CreateUserDto {
   @ApiProperty({
     type: String,
     description: 'Role of user',
-    required: true,
+    enum: Role,
+    required: false,
   })
-  @IsString()
-  admin:string = Role.Admin;
+  @IsEnum(Role, { message: 'The role must be either Admin or User.' })
+  @IsOptional()  
+  role?: Role = Role.Admin; 
+
 }

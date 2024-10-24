@@ -42,7 +42,6 @@ export class AuthService {
         HttpStatus.UNAUTHORIZED,
       );
     }
-
     const token = await this.createToken(user);
     return {token} ;
   }
@@ -68,7 +67,7 @@ export class AuthService {
       id: user.id,
       email: user.email,
       sub: user.id,
-      roles: user.admin,
+      role: user.role,
     };
 
     return this.jwtService.signAsync(payload);

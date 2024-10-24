@@ -11,6 +11,7 @@ import { Role } from 'src/modules/users/enum/role.enum';
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
+
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
@@ -18,17 +19,27 @@ export class RolesGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+  
     const request = context.switchToHttp().getRequest();
-    const user = request.user;
-    
-    const valid = user?.roles;
-
-    if (!valid) {
+    const user = request.user; 
+  
+    const userRole = user.role; 
+  
+    if (!userRole) {
       throw new UnauthorizedException(
         'You do not have permission to access this route',
       );
     }
-
-    return valid;
+  
+    const hasRole = requiredRoles.includes(userRole);
+  
+    if (!hasRole) {
+      throw new UnauthorizedException(
+        'You do not have permission to access this route',
+      );
+    }
+  
+    return true;
   }
+  
 }
