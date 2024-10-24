@@ -24,9 +24,9 @@ const PostgresDataSourceOptions: DataSourceOptions = {
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migration/*{.ts,.js}'],
   subscribers: [],
-  synchronize: true,
+  synchronize: false,
   logging: false,
-  dropSchema: true,
+  dropSchema: false,
   ssl: {
     rejectUnauthorized: false, 
   },
