@@ -25,9 +25,16 @@ export class AuthController {
   async signIn(@Body() credentials: SignInAuthDto) {
     try {
       const token = await this.authService.signIn(credentials);
-      return token ;
+      return token;
     } catch (error) {
-      throw new HttpException({ message: error.message }, error.getStatus());
+      if (error instanceof HttpException) {
+        throw error; 
+      } else {
+        throw new HttpException(
+          { message: error.message || 'Internal server error' },
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
     }
   }
 
