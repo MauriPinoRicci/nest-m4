@@ -28,7 +28,8 @@ export class Products {
     @ManyToOne(() => Categories, category => category.products)
     category: Categories;
 
-    @ManyToMany(() => OrderDetails, orderDetail => orderDetail.products)
+    @ManyToMany(() => OrderDetails, orderDetail => orderDetail.products,{ onDelete: 'CASCADE' })
     @JoinTable()
     orderDetails: OrderDetails[];
+
 }

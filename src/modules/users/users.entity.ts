@@ -31,7 +31,7 @@ export class Users {
   @Column({ type: 'timestamp' })
   createdAt: Date;
 
-  @OneToMany(() => Orders, (order) => order.user)
+  @OneToMany(() => Orders, (order) => order.user,{ onDelete: 'CASCADE' })
   orders: Orders[];
 
   @Column({ 
